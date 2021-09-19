@@ -52,6 +52,12 @@ app.get('/noticias', (req, res) => {
             "titulo": "hola juan carlo",
             "imagen": "https://store-images.s-microsoft.com/image/apps.18195.14259955503324792.fee0f975-9292-4852-ad19-c6ec880d57d3.35e9f104-1086-48a4-a429-c1c8dd863347?w=180&h=270&q=60",
             "descripcion": "Hello world"
+        },
+        {
+            "topic": "usuario",
+            "titulo": "hola juan carlo",
+            "imagen": "https://store-images.s-microsoft.com/image/apps.18195.14259955503324792.fee0f975-9292-4852-ad19-c6ec880d57d3.35e9f104-1086-48a4-a429-c1c8dd863347?w=180&h=270&q=60",
+            "descripcion": "Hello world"
         }
     ]
     res.render('noticias.ejs',{post})
@@ -60,23 +66,27 @@ app.get('/noticias', (req, res) => {
 
 //---------PROBANDO---------------
 
-
+//ESTE METODO MUESTRA LA NOTICIA EN BASE AL a un msj con formato json
 app.get('/noticias', (req, res) => {
-    var mensajes = []
-    res.render('noticiasMsj.ejs', { mensajes: mensajes });
-    // llamo a la funcion "consume" , e imprime cualquier error
-    consume(io, mensajes).catch((err) => {
-        console.error("Error en consumer: ", err)
-    })
+
+    let post =
+    [
+        {
+            "topic": "usuario",
+            "titulo": "hola juan carlo",
+            "imagen": "https://store-images.s-microsoft.com/image/apps.18195.14259955503324792.fee0f975-9292-4852-ad19-c6ec880d57d3.35e9f104-1086-48a4-a429-c1c8dd863347?w=180&h=270&q=60",
+            "descripcion": "Hello world"
+        },
+        {
+            "topic": "usuario",
+            "titulo": "hola juan carlo",
+            "imagen": "https://store-images.s-microsoft.com/image/apps.18195.14259955503324792.fee0f975-9292-4852-ad19-c6ec880d57d3.35e9f104-1086-48a4-a429-c1c8dd863347?w=180&h=270&q=60",
+            "descripcion": "Hello world"
+        }
+    ]
+    res.render('noticias.ejs',{post})
 });
-
-/*app.get('/', (req, res) => {
-
-    res.send("estoy en el front")
-    consume(io, mensajes).catch((err) => {
-        console.error("Error en consumer: ", err)
-    })
-});*/
+//--------------------------------
 
 io.on('connection', (socket) => {
     console.log('a user connected'); 
