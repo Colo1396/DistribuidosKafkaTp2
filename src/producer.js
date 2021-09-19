@@ -15,6 +15,8 @@ const post =[];
 	await producer.connect();
 	let i = 0
 
+	
+	//Ejemplo para guardar cuando el productor genera un msj
 	let newPost ={
         "topic":"usuario",
         "titulo":"hola juan carlo",
@@ -32,16 +34,18 @@ const post =[];
 					{
 						key: String(i),
 						//value: "Este es el mensaje --> " + i + JSON.stringify(newPost),
-						value: JSON.stringify(newPost),
+						value: JSON.stringify(newPost), //reenplace el msj que enviaba el productor con la cadena tipo Json
 					},
 				],
 			})
 
 			console.log(`Producer: El mensaje ${i} fue escrito con exito!!!`);
 			i++
+			/*
+			//Guardo el msj de tipo json en el documento de json de Posteos
 			post.push(newPost)
 			const json_post =JSON.stringify(post)
-			fs.writeFileSync('src/post.json',json_post,'utf-8');
+			fs.writeFileSync('src/post.json',json_post,'utf-8');*/
 		} catch (err) {
 			console.error("No se pudo escribir el mensaje debido a --> " + err)
 		}
