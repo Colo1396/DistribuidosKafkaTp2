@@ -36,43 +36,17 @@ app.get('/', (req, res) => {
     })
 });
 
-/*
+
 //ESTE METODO MUESTRA LA NOTICIA EN BASE AL ARCHIVO DE JSON DE POST
 const json_post = fs.readFileSync('src/post.json','utf-8');
 let post =JSON.parse(json_post);
-app.get('/noticias', (req, res) => {
+app.get('/noticiasDesdeArchivoJson', (req, res) => {
     res.render('noticias.ejs',{post})
-});*/
+});
 
 //ESTE METODO MUESTRA LA NOTICIA EN BASE AL a un msj con formato json
-/*app.get('/noticias', (req, res) => {
+app.get('/noticiasDesdeCadenaTipoJson', (req, res) => {
 
-    let post =
-    [
-        {
-            "topic": "usuario",
-            "titulo": "hola juan carlo",
-            "imagen": "https://store-images.s-microsoft.com/image/apps.18195.14259955503324792.fee0f975-9292-4852-ad19-c6ec880d57d3.35e9f104-1086-48a4-a429-c1c8dd863347?w=180&h=270&q=60",
-            "descripcion": "Hello world"
-        },
-        {
-            "topic": "usuario",
-            "titulo": "hola juan carlo",
-            "imagen": "https://store-images.s-microsoft.com/image/apps.18195.14259955503324792.fee0f975-9292-4852-ad19-c6ec880d57d3.35e9f104-1086-48a4-a429-c1c8dd863347?w=180&h=270&q=60",
-            "descripcion": "Hello world"
-        }
-    ]
-    res.render('noticias.ejs',{post})
-});*/
-
-
-//---------PROBANDO---------------
-const socket = io();
-let variable=socket.on('chat message', (msg))
-//ESTE METODO MUESTRA LA NOTICIA EN BASE AL a un msj con formato json
-app.get('/noticias', (req, res) => {
-    
-    console.log("EL MSJ DEL CONSUMER ES:",variable)
     let post =
     [
         {
@@ -91,10 +65,8 @@ app.get('/noticias', (req, res) => {
     res.render('noticias.ejs',{post})
 });
 
-
-
+/*//ESTE METODO MUESTRA LA NOTICIA EN HTLM PROBANDO CON RO
 app.get('/noticiasHtml', (req, res) => {
-    //var mensajes = []
     let post =
     [
         {
@@ -111,13 +83,16 @@ app.get('/noticiasHtml', (req, res) => {
         }
     ]
     res.render('noticias.html', { post: post });
-    // llamo a la funcion "consume" , e imprime cualquier error
-    /*consume(io, mensajes).catch((err) => {
-        console.error("Error en consumer: ", err)
-    })*/
-});
 
-//--------------------------------
+});*/
+
+//---------PROBANDO---------------
+
+
+
+
+
+//----SOCKET----------------------------
 
 io.on('connection', (socket) => {
     console.log('a user connected'); 
