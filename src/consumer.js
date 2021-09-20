@@ -10,12 +10,12 @@ const consume = async (io, mensajes) =>{
     await consumer.run({ // empiza a recibir los mensajes 
         autoCommit: true,
         eachMessage: ({message})=>{
-            console.log("el mensajes es ;",message.value)
-            console.log("el message es ;",message.value)
-            console.log("el mensajes string es ;",message.value.toString())
-            console.log("el message string es ;",message.value.toString())
-            console.log("el mensajes json es ;",JSON.parse(message.value.toString()))
-            console.log("el message json es ;", JSON.parse(message.value.toString()))
+            //console.log("el mensajes es ;",message.value)
+            //console.log("el message es ;",message.value)
+            //console.log("el mensajes string es ;",message.value.toString())
+            //console.log("el message string es ;",message.value.toString())
+            //console.log("el mensajes json es ;",JSON.parse(message.value.toString()))
+            //console.log("el message json es ;", JSON.parse(message.value.toString()))
             mensajes.push(`Consumer: Mensaje recibido: ${message.value}`);
             io.emit('chat message', `Consumer: Mensaje recibido: ${message.value}`);
         }
