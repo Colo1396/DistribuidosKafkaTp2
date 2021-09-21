@@ -38,7 +38,7 @@ const producer = kafka.producer()
 		} catch (err) {
 			console.error("No se pudo escribir el mensaje debido a --> " + err)
 		}
-	}, 5000);
+	}, 15000);
 }
 
 module.exports = produce

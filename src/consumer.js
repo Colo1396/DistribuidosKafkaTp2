@@ -11,6 +11,7 @@ const consume = async (io, mensajes) =>{
         eachMessage: ({message})=>{
             mensajes.push(`Consumer: Mensaje recibido: ${message.value}`);
             io.emit('chat message', `Consumer: Mensaje recibido: ${message.value}`);
+            io.emit('consume:post', `${message.value}`);
         }
     });
 }
