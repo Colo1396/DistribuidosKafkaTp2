@@ -1,6 +1,6 @@
 var socket = io();
 
-var listaMsg = document.getElementById("mensajes");
+var listaNotif = document.getElementById("notificaciones");
 
 var post = `
 <div class="card mb-3" style="max-width: 540px;">
@@ -17,9 +17,27 @@ var post = `
     </div>
 </div>`;
 
-socket.on('chat message', (msg) => {
-    var item = document.createElement('div');
-    item.innerHTML = post;
-    item.querySelector('#mensaje').textContent = msg;
-    listaMsg.appendChild(item);
+var notificacion = `
+<div class="col-12 pb-3">
+    <strong id="nombre" class="text-info"></strong>
+    <p id="mensaje" class="m-0 lead"></p>
+</div>
+`
+
+socket.on('notificacion', (msg) => {
+    const message = JSON.parse(msg);
+    var item = document.createElement('li');
+    item.innerHTML = notificacion;
+    item.querySelector('#nombre').textContent = message.name;
+
+    if(message.type === 'FOLLOW'){
+        item.querySelector('#mensaje').textContent = 'Empezo a seguirte';
+    }
+    else if(message.type === 'LIKE'){
+        item.querySelector('#mensaje').textContent = 'Le dio like a tu post ' + message.post;
+    }
+    const contador = document.getElementById('contadorNoti');
+    contador.textContent = parseInt(contador.textContent) + 1;
+
+    listaNotif.appendChild(item);
 });

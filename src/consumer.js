@@ -5,12 +5,11 @@ const consume = async (io, mensajes) =>{
     const consumer = kafka.consumer({ groupId: "node"}); 
 
     await consumer.connect(); //se conecta el consumidor 
-    await consumer.subscribe({topic: "testTopic", fromBeginning: true}); //para recibir los mensajes de este topic
+    await consumer.subscribe({topic: "juan_notificaciones", fromBeginning: true}); //para recibir los mensajes de este topic
     await consumer.run({ /** empiza a recibir los mensajes */
         autoCommit: true,
         eachMessage: ({message})=>{
-            mensajes.push(`Consumer: Mensaje recibido: ${message.value}`);
-            io.emit('chat message', `Consumer: Mensaje recibido: ${message.value}`);
+            io.emit('notificacion', `${message.value}`);
         }
     });
 }

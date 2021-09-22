@@ -5,6 +5,7 @@ const path = require('path');
 const http = require('http');
 const { Server } = require("socket.io");
 const consume = require("./consumer");
+const produce = require('./producer');
 
 const app = express();
 const server = http.createServer(app);
@@ -24,12 +25,29 @@ app.set('views', './src/views');
 
 //ROUTES-----------------------------------------------
 app.get('/', (req, res) => {
-    var mensajes = []
-    res.render('home', { mensajes: mensajes });
+    res.render('home');
     // llamo a la funcion "consume" , e imprime cualquier error
-    consume(io, mensajes).catch((err) => {
+    consume(io).catch((err) => {
         console.error("Error en consumer: ", err)
-    })
+    });
+});
+
+app.post('/users/123/follow', (req, res) => {
+    produce
+    .follow('juan_notificaciones', 'Marta')
+    .catch((err) => {
+        console.error("Error en producer: ", err);
+    });
+    res.end();
+});
+
+app.post('/posts/123/like', (req, res) => {
+    produce
+    .like('juan_notificaciones', '123', 'Marta')
+    .catch((err) => {
+        console.error("Error en producer: ", err);
+    });
+    res.end();
 });
 
 io.on('connection', (socket) => {
