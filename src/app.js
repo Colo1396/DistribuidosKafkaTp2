@@ -7,6 +7,12 @@ const { Server } = require("socket.io");
 const consume = require("./consumer");
 const produce = require('./producer');
 
+//SERVICES--------------------------------------
+const {PostService} = require('./services/PostService');
+const {PostSuscriptoService} = require('./services/PostSuscriptoService');
+const {UserService} = require('./services/UserService');
+//---------------------------------------------------
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -49,6 +55,11 @@ app.post('/posts/123/like', (req, res) => {
     });
     res.end();
 });
+
+app.get('/pruebaMapeo', async (req,res)=>{
+    console.log(await PostService.getAll()); 
+});
+
 
 io.on('connection', (socket) => {
     console.log('a user connected'); 
