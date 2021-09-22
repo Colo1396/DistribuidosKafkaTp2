@@ -5,6 +5,7 @@ const path = require('path');
 const http = require('http');
 const { Server } = require("socket.io");
 const consume = require("./consumer");
+const produce = require("./producer")
 
 const app = express();
 const server = http.createServer(app);
@@ -26,18 +27,36 @@ app.set('view engine', 'ejs');
 app.set('views', './src/views');
 
 //ROUTES-----------------------------------------------
-app.get('/', (req, res) => {
+
+
+//Con este get podemos consultar  a la funcion del consumer mostrar noticia la cual muestra los posteos a los que este asociado
+//app.get('/postear', produce.guardarNoticia)
+app.get('/postearUno', produce.guardarUnaNoticia)
+app.get('/verPost', consume.mostrarNoticia)
+//app.get('/verPostAuto', consume.mostrarNoticiasAutomaticamente)
+
+
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+});
+
+module.exports = server;
+
+//------------NO BORRAR-------------------
+
+/*app.get('/', (req, res) => {
     var mensajes = []
     res.render('home.pug', { mensajes: mensajes });
     // llamo a la funcion "consume" , e imprime cualquier error
     consume(io, mensajes).catch((err) => {
         console.error("Error en consumer: ", err)
     })
-});
+});*/
 
 
 //ESTE METODO MUESTRA LA NOTICIA EN BASE AL a un msj con formato json
-app.get('/noticiasDesdeCadenaTipoJson', (req, res) => {
+/*app.get('/noticiasDesdeCadenaTipoJson', (req, res) => {
     let post =
         [
             {
@@ -54,47 +73,4 @@ app.get('/noticiasDesdeCadenaTipoJson', (req, res) => {
             }
         ]
     res.render('noticias.ejs', { post })
-});
-//************************************************************************************* */
-
-app.get('/verPost', consume.mostrarNoticia)
-
-
-//************************************************************************************* */
-io.on('connection', (socket) => {
-    console.log('a user connected');
-});
-
-module.exports = server;
-
-//************************************************************************************* */
-//ESTE METODO MUESTRA LA NOTICIA EN BASE AL a un msj con formato json
-/*app.get('/noticiasDesdeCadenaTipoJson2', (req, res) => {
-    let post =JSON.stringify(posteos)
-    console.log("estoy en el metodo de la vista")
-    console.log(posteos)
-    console.log("estoy en el metodo de la vista ++ ",posteos)
-
-    console.log("estoy en el metodo de la vista muestro el post")
-    console.log(post)
-    console.log("estoy en el metodo de la vista ++ muestro el post",post)
-
-    res.render('noticias.ejs', { post })
-});
-
-
-io.on('connection', (socket) => {
-    console.log('a user connected');
-
-    socket.on('consume:post', (post) => {
-        console.log("la data es:", post);
-        posteos.push(post)
-        console.log(posteos)
-
-    })
-    console.log(posteos)
-
 });*/
-
-
-
