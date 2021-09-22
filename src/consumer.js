@@ -16,4 +16,31 @@ const consume = async (io, mensajes) =>{
     });
 }
 
-module.exports = consume;
+const mostrarNoticia = async (req, res) => {
+    try {
+        const timestamp = Date.now();
+        const consumer = kafka.consumer({ groupId: timestamp.toString() })
+        await consumer.connect()
+        //await consumer.subscribe({ topic: req.body.topic, fromBeginning: true })
+        await consumer.subscribe({ topic: 'jamon', fromBeginning: true })
+        let post = [];
+
+        await consumer.run({
+            eachMessage: async ({ message }) => {
+                const value = message.value.toString()
+                console.log("el req.body",JSON.parse(value).msg)
+                post.push(JSON.parse(value).msg)
+            },
+        })
+
+        setTimeout(() => {
+            consumer.disconnect()
+            res.render('noticias.ejs', { post })
+        }, 1000)
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+}
+
+module.exports ={ consume,mostrarNoticia};
