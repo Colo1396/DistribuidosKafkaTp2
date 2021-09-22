@@ -6,6 +6,12 @@ const http = require('http');
 const { Server } = require("socket.io");
 const consume = require("./consumer");
 
+//SERVICES--------------------------------------
+const {PostService} = require('./services/PostService');
+const {PostSuscriptoService} = require('./services/PostSuscriptoService');
+const {UserService} = require('./services/UserService');
+//---------------------------------------------------
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -23,14 +29,19 @@ app.set('view engine', 'pug');
 app.set('views', './src/views');
 
 //ROUTES-----------------------------------------------
-app.get('/', (req, res) => {
-    var mensajes = []
-    res.render('home', { mensajes: mensajes });
+app.get('/', (req, res) => {    
+    var mensajes = [];
+    res.render('home', {mensajes: mensajes} );
     // llamo a la funcion "consume" , e imprime cualquier error
     consume(io, mensajes).catch((err) => {
         console.error("Error en consumer: ", err)
     })
 });
+
+app.get('/pruebaMapeo', async (req,res)=>{
+    console.log(await PostService.getAll()); 
+});
+
 
 io.on('connection', (socket) => {
     console.log('a user connected'); 
