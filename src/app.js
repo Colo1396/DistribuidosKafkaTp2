@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, './views/static')));
 //SETTINGS---------------------------------------------
 app.set('json spaces', 2);
 app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 app.set('views', './src/views');
 
 //ROUTES-----------------------------------------------
@@ -60,6 +61,11 @@ app.get('/pruebaMapeo', async (req,res)=>{
     console.log(await PostService.getAll()); 
 });
 
+
+//-------------------------------------
+app.post('/postearUno', produce.guardarUnaNoticia)
+app.get('/verPost', consume.mostrarNoticia)
+//-------------------------------------
 
 io.on('connection', (socket) => {
     console.log('a user connected'); 
