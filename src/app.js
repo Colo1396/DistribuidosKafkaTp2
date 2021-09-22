@@ -32,7 +32,7 @@ app.set('views', './src/views');
 
 //ROUTES-----------------------------------------------
 app.get('/', (req, res) => {
-    res.render('home');
+    res.render('home.pug');
     // llamo a la funcion "consume" , e imprime cualquier error
     consume(io).catch((err) => {
         console.error("Error en consumer: ", err)
