@@ -4,7 +4,8 @@ const userModel = require('./models/User');
 const postModel = require('./models/Post');
 const postSuscriptoModel = require('./models/PostSuscripto');
 
-const sequelize = new Sequelize("kafkaredsocial_db", "root", "123456789" ,{
+/** CONFIGURACIÓN CONEXION PARA LA BD */
+const sequelize = new Sequelize("kafkaredsocial_db", "root", "toor" ,{
     host : "localhost",
     port: "3306",
     dialect: "mysql"
@@ -42,7 +43,7 @@ sequelize.sync({ force:false })
         console.log("Models mapeados!!!");
     });
 
-
+/** EXPORTO LOS OBJETOS PARA PODER USARLOS PARA LAS CONSULTAS */
 module.exports = {
     UserModel,
     PostModel,

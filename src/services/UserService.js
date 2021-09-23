@@ -1,14 +1,19 @@
 const {UserModel} = require('../connection ');
 
 class UserService {
-
-    static async add(usuarname,nombre,password){
+/*
+    static async add(username,nombre,password){
         const newUser = {
-            "usuarname" : usuarname,
+            "username" : username,
             "nombre" : nombre,
             "password" : password
         }
 
+        return await UserModel.create(newUser); 
+    }
+*/
+
+    static async add(newUser){
         return await UserModel.create(newUser); 
     }
 
