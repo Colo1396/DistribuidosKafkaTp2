@@ -28,6 +28,7 @@ app.use(express.static(path.join(__dirname, './views/static')));
 app.set('json spaces', 2);
 app.set('view engine', 'pug');
 app.set('view engine', 'ejs');
+app.set('view engine', 'html');
 app.set('views', './src/views');
 
 //ROUTES-----------------------------------------------
@@ -63,8 +64,13 @@ app.get('/pruebaMapeo', async (req,res)=>{
 
 
 //-------------------------------------
+app.post('/noticiasHtml', (req, res) => {
+    res.render('noticias.html');
+});
 app.post('/postearUno', produce.guardarUnaNoticia)
 app.get('/verPost', consume.mostrarNoticia)
+app.post('/guardarMensaje', produce.guardarMensaje)
+app.post('/traerMensajes', consume.traerMensajes)
 //-------------------------------------
 
 io.on('connection', (socket) => {
