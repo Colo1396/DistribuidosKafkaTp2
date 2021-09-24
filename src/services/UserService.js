@@ -25,6 +25,12 @@ class UserService {
         return  {users: users};    
     }
 
+    static async getById(id){
+        var users = await UserModel.findByPk(id);
+        console.log("USER");
+        console.log(users);
+        return  {users: users};    
+    }
 }
 
 module.exports = {
