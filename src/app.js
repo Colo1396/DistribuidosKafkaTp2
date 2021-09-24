@@ -69,6 +69,10 @@ app.post('/login', user.login);
 app.get('/perfil', user.perfil);
 
 app.get('/', (req, res) => {
+    res.render('index');
+});
+
+app.get('/home', (req, res) => {
     res.render('home.pug');
     // llamo a la funcion "consume" , e imprime cualquier error
     consume(io).catch((err) => {
