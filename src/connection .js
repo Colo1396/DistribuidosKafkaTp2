@@ -47,5 +47,6 @@ sequelize.sync({ force:false })
 module.exports = {
     UserModel,
     PostModel,
-    PostSuscriptoModel
+    PostSuscriptoModel, 
+    sequelize
 }

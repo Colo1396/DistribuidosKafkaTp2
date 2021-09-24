@@ -15,3 +15,20 @@ exports.register =  passport.authenticate('local.signup', {
     failureRedirect: '/register',
     failereFlash: true
 }); //especifico donde quiero que vaya si se autentica o si falla
+
+exports.getLogin = function(req, res){
+  res.render('login', { page_title: 'login' });
+};
+
+exports.login = function(req, res){
+  console.log("user js");
+  passport.authenticate('local.signin', {
+  successRedirect: '/perfil',
+  failureRedirect: '/login',
+  failureFlash: true
+  })(req, res);
+};
+
+exports.perfil = function(req, res){
+  res.render('perfil', { page_title: 'Perfil' });
+};

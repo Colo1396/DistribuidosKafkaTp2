@@ -6,16 +6,12 @@ const http = require('http');
 const { Server } = require("socket.io");
 const flash = require('connect-flash');
 const session = require('express-session');
-//const MySQLStore = require('express-mysql-session');
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser'); 
 
 const consume = require("./consumer");
 const produce = require('./producer');
-
-/*
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-*/
 
 //SERVICES--------------------------------------
 const {PostService} = require('./services/PostService');
@@ -37,10 +33,14 @@ app.use(morgan('dev'));
 app.use(cors());//para q permita q cualquier servidor pida cosas y haga operaciones
 app.use(express.static(path.join(__dirname, './views/static')));
 
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+ 
 app.use(session({
     secret: 'DistribuidosTp2',
-    resave : false,
-    saveUninitialized: false,
+    resave : true,
+    saveUninitialized: true,
 }));
 app.use(flash()); 
 //passport
@@ -55,6 +55,8 @@ app.set('views', './src/views');
 //VARIABLES GLOBALES-----------------------------------
 app.use((req, res, next) =>{
     app.locals.success = req.flash('success');
+    app.locals.message = req.flash('message');
+    app.locals.user = req.user;
     next();
 });
 
@@ -62,11 +64,12 @@ app.use((req, res, next) =>{
 //USER
 app.get('/register', user.getRegister);
 app.post('/register', user.register);
-app.get('/login', user.login);
+app.get('/login', user.getLogin);
 app.post('/login', user.login);
+app.get('/perfil', user.perfil);
 
 app.get('/', (req, res) => {
-    res.render('home');
+    res.render('home.pug');
     // llamo a la funcion "consume" , e imprime cualquier error
     consume(io).catch((err) => {
         console.error("Error en consumer: ", err)
