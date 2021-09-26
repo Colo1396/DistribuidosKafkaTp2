@@ -61,11 +61,6 @@ app.post('/posts/123/like', (req, res) => {
     res.end();
 });
 
-app.get('/pruebaMapeo', async (req,res)=>{
-    console.log(await PostService.getAll()); 
-});
-
-
 /** AGREGAR UN NUEVO POST Y GUARDARLO */
 app.get('/nuevoPost', (req,res)=>{
     return res.render('nuevoPost');
@@ -86,6 +81,18 @@ app.post('/agregarNuevoPost', async (req,res)=>{
     await produce.guardarPost(nuevoPost); //creo el post con kafka 
 
     res.redirect('/');
+});
+
+/** Buscar usuarios para seguir */
+app.get('/buscarUsuarios', (req,res)=>{
+    return res.render('listarUsuarios');
+});
+app.post('/buscarUsuarios', async(req,res)=>{
+    const usuariosBuscados = await UserService.findUsersByUsername(req.body.username); //realizo la query
+    const usuarios = usuariosBuscados.userFilters;
+    console.log(usuarios);
+
+    return res.render('listarUsuarios', {usuarios: usuarios});
 });
 
 //-------------------------------------
