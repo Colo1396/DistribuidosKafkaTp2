@@ -80,8 +80,8 @@ app.post('/agregarNuevoPost', async (req,res)=>{
             "idUser" : 1 //este atributo va a ser estatico hasta que se implemente la autenticacion de user (login/register) para identificar al user que lo crea
         }
     }
-    console.log(nuevoPost.msg);
 
+    console.log("Nuevo post --> "+ nuevoPost);
     await PostService.add(nuevoPost.msg); //guardo los datos post en la BD para la persistencia
     await produce.guardarPost(nuevoPost); //creo el post con kafka 
 
