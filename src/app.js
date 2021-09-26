@@ -71,7 +71,7 @@ app.post('/postearUno', produce.guardarUnaNoticia)
 app.get('/verPost', consume.mostrarNoticia)
 app.post('/guardarMensaje', produce.guardarMensaje)
 app.post('/traerMensajes', consume.traerMensajes)
-//app.post('/traerMensajesVariosTopicos', consume.traerMensajesVariosTopicos)
+//app.post('/traerMensajesDeVariosTopics', consume.traerMensajesDeVariosTopics)
 
 //-------------------------------------
 
