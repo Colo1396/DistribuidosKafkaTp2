@@ -66,7 +66,7 @@ app.get('/register', user.getRegister);
 app.post('/register', user.register);
 app.get('/login', user.getLogin);
 app.post('/login', user.login);
-app.get('/perfil', user.perfil);
+app.get('/inicio', user.inicio);
 
 app.get('/', (req, res) => {
     res.render('index');

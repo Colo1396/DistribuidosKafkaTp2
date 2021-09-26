@@ -23,12 +23,12 @@ exports.getLogin = function(req, res){
 exports.login = function(req, res){
   console.log("user js");
   passport.authenticate('local.signin', {
-  successRedirect: '/perfil',
+  successRedirect: '/inicio',
   failureRedirect: '/login',
   failureFlash: true
   })(req, res);
 };
 
-exports.perfil = function(req, res){
-  res.render('perfil', { page_title: 'Perfil' });
+exports.inicio = function(req, res){
+  res.render('inicio', { page_title: 'Inicio' });
 };
