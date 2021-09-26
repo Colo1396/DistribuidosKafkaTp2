@@ -1,3 +1,4 @@
+const Op = require('sequelize').Op;
 const {UserModel} = require('../connection ');
 
 class UserService {
@@ -18,6 +19,20 @@ class UserService {
             nest: true
          });
         return  {users: users};    
+    }
+
+    static async findUsersByUsername(username){
+        var userFilters = await UserModel.findAll({
+            where: { /** ME TRAE TODOS LOS USUARIOS QUE CUMPLAN EL PARAMETRO INDICADO*/
+                usuarname :{
+                    [Op.substring]: username      // LIKE '%username%'
+                }
+            },
+            raw: true,
+            nest: true 
+        });
+
+        return {userFilters : userFilters};
     }
 
 }

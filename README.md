@@ -4,10 +4,23 @@
 ## Entrar en la carpeta descomprimida de kafka
 
 **Para iniciar Kafka en Linux/Mac se deben ejecutar los siguentes comandos abriendo dos consolas:**
-* Ejecutar el comando **bin/zookeeper-server-start.sh config/zookeeper.properties**
-* Ejecutar el comando **bin/kafka-server-start.sh config/server.properties**
+```
+    bin/zookeeper-server-start.sh config/zookeeper.properties**
+```
+```
+    bin/kafka-server-start.sh config/server.properties**
+```
 
 **Para iniciar Kafka en Windows se deben ejecutar los siguentes comandos abriendo dos consolas:**
-* Dentro de la carpeta descomprimida de kafka entrar en **\bin\windows**
-* Ejecutar el comando **.\zookeeper-server-start.bat ..\\..\config\zookeeper.properties**
-* Ejecutar el comando **.\kafka-server-start.bat ..\\..\config\server.properties**
+* Dentro de la carpeta descomprimida de kafka entrar en **\bin\windows** y ejecutar los siguentes comandos
+```
+    .\zookeeper-server-start.bat ..\\..\config\zookeeper.properties**
+```
+```
+    .\kafka-server-start.bat ..\\..\config\server.properties**
+```
+
+**Para ver los topics creados en Kafka en un puerto especifico ejecutar el siguente comando:**
+```
+    .\bin\windows\kafka-topics.bat --list --zookeeper localhost:2181
+```

@@ -103,9 +103,37 @@ const guardarUnaNoticia = async (req, res) => {
 	}
 
 }
+
+const guardarPost = async (nuevoPost) => {
+	await producer.connect();
+
+	try {
+		console.log("guardo el nuevo post: ")
+		console.log(nuevoPost)
+
+		const msg = JSON.stringify(nuevoPost)
+		console.log("guardo el nuevo msj despues de hacerlo un json", msg)
+		console.log("este es el req body topic:", nuevoPost.topic)
+
+		await producer.send({
+			topic: nuevoPost.topic,
+			messages: [
+				{ value: msg },
+			],
+		})
+
+		await producer.disconnect()
+		console.log('Post guardado con exito!!!');
+
+	} catch (error) {
+		console.error("Error --> " + error);
+	}
+}
+
 //--------------------------------
 module.exports = {
 	follow,
 	like,
-	guardarMensaje,guardarUnaNoticia	
+	guardarMensaje,guardarUnaNoticia
+	, guardarPost	
 };

@@ -29,6 +29,7 @@ app.set('json spaces', 2);
 app.set('view engine', 'pug');
 app.set('view engine', 'ejs');
 app.set('view engine', 'html');
+app.set('view engine', 'hbs');
 app.set('views', './src/views');
 
 //ROUTES-----------------------------------------------
@@ -39,6 +40,8 @@ app.get('/', (req, res) => {
         console.error("Error en consumer: ", err)
     });
 });
+
+
 
 app.post('/users/123/follow', (req, res) => {
     produce
@@ -58,10 +61,39 @@ app.post('/posts/123/like', (req, res) => {
     res.end();
 });
 
-app.get('/pruebaMapeo', async (req,res)=>{
-    console.log(await PostService.getAll()); 
+/** AGREGAR UN NUEVO POST Y GUARDARLO */
+app.get('/nuevoPost', (req,res)=>{
+    return res.render('nuevoPost');
+});
+app.post('/agregarNuevoPost', async (req,res)=>{
+    const nuevoPost = {
+        "topic" : "nuevoTopic", 
+        "msg": {
+            "titulo" : req.body.titulo,
+            "imagen" : req.body.imagen,
+            "texto" : req.body.texto,
+            "idUser" : 1 //este atributo va a ser estatico hasta que se implemente la autenticacion de user (login/register) para identificar al user que lo crea
+        }
+    }
+
+    console.log("Nuevo post --> "+ nuevoPost);
+    await PostService.add(nuevoPost.msg); //guardo los datos post en la BD para la persistencia
+    await produce.guardarPost(nuevoPost); //creo el post con kafka 
+
+    res.redirect('/');
 });
 
+/** Buscar usuarios para seguir */
+app.get('/buscarUsuarios', (req,res)=>{
+    return res.render('listarUsuarios');
+});
+app.post('/buscarUsuarios', async(req,res)=>{
+    const usuariosBuscados = await UserService.findUsersByUsername(req.body.username); //realizo la query
+    const usuarios = usuariosBuscados.userFilters;
+    console.log(usuarios);
+
+    return res.render('listarUsuarios', {usuarios: usuarios});
+});
 
 //-------------------------------------
 app.post('/noticiasHtml', (req, res) => {
