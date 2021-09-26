@@ -2,14 +2,7 @@ const {PostModel} = require('../connection ');
 
 class PostService {
 
-    static async add(titulo,imagen,texto, idUsuario){
-        const newPost = {
-            "titulo" : titulo,
-            "texto" : texto,
-            "imagen" : imagen,
-            "idUser" : idUsuario
-        }
-
+    static async add(newPost){
         return await PostModel.create(newPost); 
     }
 
