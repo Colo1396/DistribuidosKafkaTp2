@@ -51,9 +51,10 @@ sequelize.sync({ force:false })
         console.log("Models mapeados!!!");
     });
 
-
+/** EXPORTO LOS OBJETOS PARA PODER USARLOS PARA LAS CONSULTAS */
 module.exports = {
     UserModel,
     PostModel,
-    PostSuscriptoModel
+    PostSuscriptoModel, 
+    sequelize
 }

@@ -6,7 +6,11 @@ module.exports = (sequalize, type)=>{
             autoIncrement: true,
             allowNull : false
         },
-        usuarname: {
+        username: {
+            type: type.STRING,
+            allowNull : false
+        },
+        name: {
             type: type.STRING,
             allowNull : false
         },
