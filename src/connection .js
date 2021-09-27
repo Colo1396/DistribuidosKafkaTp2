@@ -4,19 +4,20 @@ const userModel = require('./models/User');
 const postModel = require('./models/Post');
 const postSuscriptoModel = require('./models/PostSuscripto');
 
+/*
 const sequelize = new Sequelize("kafkaredsocial_db", "root", "123456789" ,{
     host : "localhost",
     port: "3306",
     dialect: "mysql"
-});
+});*/
 
-/*
+
 const sequelize = new Sequelize("bbvz5ubbkmmsymn7s0pm", "u1k3xrdtrvnoxfts", "229roI7cszThaIgUcPHT" ,{
     host : "bbvz5ubbkmmsymn7s0pm-mysql.services.clever-cloud.com",
     port: "3306",
     dialect: "mysql"
 });
-*/
+
 
 /*** REALIZO LOS MAPEOS DE LAS CLASES */
 const UserModel = userModel(sequelize, Sequelize);
