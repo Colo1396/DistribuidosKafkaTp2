@@ -6,7 +6,7 @@ var topic2 = document.getElementById("topic2");
 var containerNoticia = document.getElementById("verNoticias");
 var btnConsultar = document.getElementById("consultar");
 
-const api_url = "http://localhost:8080"
+const api_url = "http://localhost:8080/noticias"
 
 btnConsultar.addEventListener('click', function () {
     //listNoticias almacenara todos los msj a los que el consumer este asociado

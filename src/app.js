@@ -109,7 +109,7 @@ app.post('/noticias', (req, res) => {
 app.post('/postearUno', produce.guardarUnaNoticia)
 app.get('/verPost', consume.mostrarNoticia)
 app.post('/guardarMensaje', produce.guardarMensaje)
-app.post('/traerMensajes', consume.traerMensajes)
+app.post('/noticias/traerMensajes', consume.traerMensajes)
 //app.post('/traerMensajesDeVariosTopics', consume.traerMensajesDeVariosTopics)
 
 //-------------------------------------
