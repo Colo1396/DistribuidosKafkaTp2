@@ -9,6 +9,9 @@ const { isLoggedIn, isNotLoggedIn } = require('../lib/auth'); //Método a utiliz
 /*
  * GET pagina de registro
  */
+router.get('/index', isNotLoggedIn, (req, res) => {
+  res.render('index', { page_title: 'Index' });
+});
 
 router.get('/register', isNotLoggedIn, (req, res) => {
   res.render('register', { page_title: 'Registro de usuario' });

@@ -36,7 +36,7 @@
 
 </head>
 <body class="d-flex flex-column h-100">
-  <header>
+      <header>
         <!-- Navbar -->
     <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
@@ -101,7 +101,7 @@
     </nav>
   </header>
 
-    <!-- Contenido de la página -->
+  <!-- Contenido de la página -->
     <main class="flex-shrink-0">
       <div class="container">
         {{#if message}}
@@ -136,17 +136,16 @@
 
         <div class="container p-4">
           <div class="row">
-            <div class="col-md-4 mx-auto">
-              <div class="card text-center">
-                <div class="card-body">
-                  <h3>Bienvenido/a {{user.fullname}}</h3>
-                  <h4>{{user.username}}</h4>
-                  <a href="/" class="btn btn-primary m-4">Nuevo Post</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    
+    <div id='selectTopic'>
+        <input id='topic' type="text" placeholder="ingrese topic 1">
+        <input id='topic1' type="text" placeholder="ingrese topic 2">
+        <input id='topic2' type="text" placeholder="ingrese topic 3">
+        <button id='consultar'>consultar noticias</button>
+    </div>
+    <div id='verNoticias'></div>
+    
+    </div>
       </div>
     </main>
 
@@ -166,6 +165,7 @@
         crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
     crossorigin="anonymous"></script>
+    <script src="static/js/noticias.js"></script>
 
 </body>
 </html>

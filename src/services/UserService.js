@@ -38,6 +38,8 @@ class UserService {
         });
 
         return {userFilters : userFilters};
+    }
+    
     static async getById(id){
         var users = await UserModel.findByPk(id);
         console.log("USER");
