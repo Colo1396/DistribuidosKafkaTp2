@@ -17,6 +17,22 @@
     <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
+<header>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand mr-1" href="/">UNLa</a>
+            <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/register">Registrarse</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Iniciar sesión</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
     {{#if message}}
     <div class="container p-4">
         <div class="row">

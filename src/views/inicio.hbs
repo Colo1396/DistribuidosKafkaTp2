@@ -36,11 +36,12 @@
 
 </head>
 <body class="d-flex flex-column h-100">
-    <header>
+  <header>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand mr-1" href="/">UNLa</a>
+            {{#if user }}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -90,13 +91,17 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="#">Perfil</a>
                     <div class="dropdown-divider"></div>
+                    {{!--
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Cerrar sesión</a>
+                    --}}
+                    <a class="dropdown-item" href="/logout">Cerrar sesión</a>
                     </div>
                 </li>
             </ul>
+           {{/if}}
         </div>
     </nav>
-    </header>
+  </header>
 
     <!-- Contenido de la página -->
     <main class="flex-shrink-0">

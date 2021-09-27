@@ -62,11 +62,7 @@ app.use((req, res, next) =>{
 
 //ROUTES-----------------------------------------------
 //USER
-app.get('/register', user.getRegister);
-app.post('/register', user.register);
-app.get('/login', user.getLogin);
-app.post('/login', user.login);
-app.get('/inicio', user.inicio);
+app.use(require('./routes/user'));
 
 app.get('/', (req, res) => {
     res.render('index');

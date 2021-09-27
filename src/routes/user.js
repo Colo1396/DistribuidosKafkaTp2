@@ -1,34 +1,46 @@
+const express = require('express');
+const router = express.Router();
+
 const {UserService} = require('../services/UserService');
 
 const passport = require('passport');
+const { isLoggedIn, isNotLoggedIn } = require('../lib/auth'); //Método a utilizar en la vista que quiero proteger
 
 /*
  * GET pagina de registro
  */
 
-exports.getRegister = function(req, res){
-    res.render('register', { page_title: 'Registro de usuario' });
-  };
+router.get('/register', isNotLoggedIn, (req, res) => {
+  res.render('register', { page_title: 'Registro de usuario' });
+});
 
-exports.register =  passport.authenticate('local.signup', {
-    successRedirect: '/login',
-    failureRedirect: '/register',
-    failereFlash: true
-}); //especifico donde quiero que vaya si se autentica o si falla
+router.post('/register', passport.authenticate('local.signup', {
+  successRedirect: '/login',
+  failureRedirect: '/register',
+  failereFlash: true
+})); //especifico donde quiero que vaya si se autentica o si falla
 
-exports.getLogin = function(req, res){
-  res.render('login', { page_title: 'login' });
-};
+router.get('/login', isNotLoggedIn, (req, res) => {
+  res.render('login', { page_title: 'Login' });
+});
 
-exports.login = function(req, res){
+router.post('/login', (req, res, next) =>{
   console.log("user js");
   passport.authenticate('local.signin', {
   successRedirect: '/inicio',
   failureRedirect: '/login',
   failureFlash: true
   })(req, res);
-};
+});
 
-exports.inicio = function(req, res){
+router.get('/logout', (req, res) => {
+  req.logOut(); //Función de passport para eliminar la sesión
+  res.render('login', { page_title: 'Login' });
+});
+
+//HOME
+router.get('/inicio', isLoggedIn, (req, res) => {
   res.render('inicio', { page_title: 'Inicio' });
-};
+});
+
+module.exports = router;
