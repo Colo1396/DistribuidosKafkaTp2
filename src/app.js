@@ -16,6 +16,8 @@ const produce = require('./producer');
 //SERVICES--------------------------------------
 const {PostService} = require('./services/PostService');
 const {PostSuscriptoService} = require('./services/PostSuscriptoService');
+const {UserService} = require('./services/UserService');
+
 //---------------------------------------------------
 //REGISTRO
 var user = require('./routes/user'); 
@@ -67,9 +69,9 @@ app.use((req, res, next) =>{
 app.use(require('./routes/user'));
 
 app.get('/', (req, res) => {
-    res.render('home.pug');
+    res.render('index');
     // llamo a la funcion "consume" , e imprime cualquier error
-    consume(io).catch((err) => {
+    consume.consume(io).catch((err) => {
         console.error("Error en consumer: ", err)
     });
 });
@@ -92,25 +94,13 @@ app.post('/posts/123/like', (req, res) => {
     res.end();
 });
 
-app.get('/pruebaMapeo', async (req,res)=>{
-    console.log(await PostService.getAll()); 
-});
-
-
 //-------------------------------------
 app.get('/noticias', (req, res) => {
     res.render('noticias');
 });
 
-app.post('/noticias', (req, res) => {
-    res.render('noticias');
-});
-
-app.post('/postearUno', produce.guardarUnaNoticia)
-app.get('/verPost', consume.mostrarNoticia)
 app.post('/guardarMensaje', produce.guardarMensaje)
 app.post('/noticias/traerMensajes', consume.traerMensajes)
-//app.post('/traerMensajesDeVariosTopics', consume.traerMensajesDeVariosTopics)
 
 //-------------------------------------
 /** AGREGAR UN NUEVO POST Y GUARDARLO */
@@ -132,7 +122,7 @@ app.post('/agregarNuevoPost', async (req,res)=>{
     await PostService.add(nuevoPost.msg); //guardo los datos post en la BD para la persistencia
     await produce.guardarPost(nuevoPost); //creo el post con kafka 
 
-    res.redirect('/');
+    res.redirect('/home');
 });
 
 /** Buscar usuarios para seguir */

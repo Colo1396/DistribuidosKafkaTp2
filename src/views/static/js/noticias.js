@@ -46,15 +46,13 @@ btnConsultar.addEventListener('click', function () {
                 data.forEach(post => {
                     
                     //genero un objeto en base a los datos recibidos
-                    let objPOst = {
-                        "topic": post.topic,
+                    const objPOst = {
+                        "topic" : post.topic, 
                         "msg": {
-                            "topic": post.msg.topic,
-                            "titulo": post.msg.titulo,
-                            "imagen": post.msg.imagen,
-                            "descripcion": post.msg.descripcion
+                            "titulo" : post.msg.titulo,
+                            "imagen" : post.msg.imagen,
+                            "texto" : post.msg.texto,
                         }
-
                     }
                     
                     //pusheo a la lista el objeto recien armado, para almacenar los msj de distintos topicos
@@ -82,11 +80,11 @@ btnConsultar.addEventListener('click', function () {
             <div class="col-md-4">
                 <div class="card bg-dark">
                     <div class="card-header text-white d-flex justify-content-between align-items-center">
-                    ${paramPosteos.msg.topic}/${paramPosteos.msg.titulo}
+                    ${paramPosteos.msg.titulo}
                     </div>
                     <img class="card-img-top" src="${paramPosteos.msg.imagen}">
                     <div class="card-body text-light">
-                    ${paramPosteos.msg.descripcion}
+                    ${paramPosteos.msg.texto}
                     </div>
                 </div>
             </div>

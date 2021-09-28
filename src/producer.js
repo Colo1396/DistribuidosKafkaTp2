@@ -65,45 +65,6 @@ const guardarMensaje = async (req, res) => {
     }
 }
 
-//Post de una noticia /posteo enviado a traves de json con el topico y el msj que lo toma del json de ejemplo.
-const guardarUnaNoticia = async (req, res) => {
-	await producer.connect();
-
-	let newPost = {
-		"topic": "nuevaLista",
-		"msg": {
-			"topic": "Mary",
-			"titulo": "hola juan carlo",
-			"imagen": "https://store-images.s-microsoft.com/image/apps.18195.14259955503324792.fee0f975-9292-4852-ad19-c6ec880d57d3.35e9f104-1086-48a4-a429-c1c8dd863347?w=180&h=270&q=60",
-			"descripcion": "Hello world"
-		}
-	}
-	try {
-		console.log("guardo el nuevo msj")
-		console.log(newPost)
-		console.log("guardo el req.body en la constante msg con el json.stringfy")
-		const msg = JSON.stringify(newPost)
-		console.log("guardo el nuevo msj despues de hacerlo un json", msg)
-		console.log("este es el req body topic:", newPost.topic)
-
-		await producer.send({
-			topic: newPost.topic,
-			messages: [
-				{ value: msg },
-			],
-		})
-
-		await producer.disconnect()
-		res.send('mensaje guardado');
-
-	} catch (error) {
-		console.log(error);
-		console.log("ERROR")
-		res.send("error")
-	}
-
-}
-
 const guardarPost = async (nuevoPost) => {
 	await producer.connect();
 
@@ -134,6 +95,6 @@ const guardarPost = async (nuevoPost) => {
 module.exports = {
 	follow,
 	like,
-	guardarMensaje,guardarUnaNoticia
-	, guardarPost	
+	guardarMensaje, 
+	guardarPost	
 };

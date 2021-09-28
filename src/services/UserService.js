@@ -29,7 +29,7 @@ class UserService {
     static async findUsersByUsername(username){
         var userFilters = await UserModel.findAll({
             where: { /** ME TRAE TODOS LOS USUARIOS QUE CUMPLAN EL PARAMETRO INDICADO*/
-                usuarname :{
+                username :{
                     [Op.substring]: username      // LIKE '%username%'
                 }
             },

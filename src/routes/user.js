@@ -9,10 +9,11 @@ const { isLoggedIn, isNotLoggedIn } = require('../lib/auth'); //Método a utiliz
 /*
  * GET pagina de registro
  */
+/*
 router.get('/index', isNotLoggedIn, (req, res) => {
   res.render('index', { page_title: 'Index' });
 });
-
+*/
 router.get('/register', isNotLoggedIn, (req, res) => {
   res.render('register', { page_title: 'Registro de usuario' });
 });
@@ -30,7 +31,7 @@ router.get('/login', isNotLoggedIn, (req, res) => {
 router.post('/login', (req, res, next) =>{
   console.log("user js");
   passport.authenticate('local.signin', {
-  successRedirect: '/inicio',
+  successRedirect: '/home',
   failureRedirect: '/login',
   failureFlash: true
   })(req, res);
@@ -42,8 +43,8 @@ router.get('/logout', (req, res) => {
 });
 
 //HOME
-router.get('/inicio', isLoggedIn, (req, res) => {
-  res.render('inicio', { page_title: 'Inicio' });
+router.get('/home', isLoggedIn, (req, res) => {
+  res.render('home', { page_title: 'Home' });
 });
 
 module.exports = router;
