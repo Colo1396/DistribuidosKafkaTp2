@@ -15,11 +15,28 @@ fetch(api_url + '/traerTopics', {
 })
 .then(res => res.json())
 .then(data => {
-    data.forEach(topic => {
-        const newTopic = {'topic': topic + '_posts'}
-        console.log(newTopic);
-        traerMensajes(newTopic);
-    })
+    if(data.length === 0){
+        const div = document.createElement('div');
+        div.className = "col-12";
+        div.innerHTML = `
+        <div class="container p-4">
+            <div class="row">
+              <div class="col mx-auto">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    No tiene noticias para ver debido a que no sigue a ningún usuario.
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        containerNoticia.appendChild(div);
+    }else{
+        data.forEach(topic => {
+            const newTopic = {'topic': topic + '_posts'}
+            console.log(newTopic);
+            traerMensajes(newTopic);
+        })
+    }
 });
 
 // //Recorro la lista de topicos y llamo al a funcion que envia el topico al consumer para suscribirse y recibir las noticias asociadas
@@ -42,32 +59,32 @@ function traerMensajes(paramTopico){
     //me traigo el response del lo que devolvio /traerMensajes
         .then(response => response.json())
         .then(data => {
-            //recorro la data que esta dentro del response.json
-            data.forEach(post => {
-                
-                //genero un objeto en base a los datos recibidos
-                const objPOst = {
-                    "topic" : post.topic, 
-                    "msg": {
-                        "titulo" : post.msg.titulo,
-                        "imagen" : post.msg.imagen,
-                        "texto" : post.msg.texto,
-                        "idUser" : post.msg.idUser
+                //recorro la data que esta dentro del response.json
+                data.forEach(post => {
+                                
+                    //genero un objeto en base a los datos recibidos
+                    const objPOst = {
+                        "topic" : post.topic, 
+                        "msg": {
+                            "titulo" : post.msg.titulo,
+                            "imagen" : post.msg.imagen,
+                            "texto" : post.msg.texto,
+                            "idUser" : post.msg.idUser
+                        }
                     }
-                }
-                
-                //pusheo a la lista el objeto recien armado, para almacenar los msj de distintos topicos
-                listNoticias.push(objPOst)
-                
-                //En base a la lista de noticias que voy complentando, agrego en el HTML la noticia
-                containerNoticia.innerHTML = ``;
-                //recorro la lista de noticias
-                listNoticias.forEach(posteos => {
-                    //llamo a la funcion la cual me agrega html para imprimir la noticia
-                    renderNoticia(posteos,containerNoticia)
+                    
+                    //pusheo a la lista el objeto recien armado, para almacenar los msj de distintos topicos
+                    listNoticias.push(objPOst)
+                    
+                    //En base a la lista de noticias que voy complentando, agrego en el HTML la noticia
+                    containerNoticia.innerHTML = ``;
+                    //recorro la lista de noticias
+                    listNoticias.forEach(posteos => {
+                        //llamo a la funcion la cual me agrega html para imprimir la noticia
+                        renderNoticia(posteos,containerNoticia)
 
-                });
-            });
+                    });
+                });    
         })
 
 }
