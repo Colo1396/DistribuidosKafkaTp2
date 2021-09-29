@@ -88,7 +88,7 @@ function renderNoticia(paramPosteos,paramIdHtml){
                 <small class="text-muted">By: ${user}</small>
                 <div class="justify-content-between align-items-center">
                     <div align="right">
-                        <button class="like" style="font-size: 2em; color: Dodgerblue;" align="right" onclick="like('${paramPosteos.msg.idUser}')">
+                        <button class="like" style="font-size: 2em; color: Dodgerblue;" align="right" onclick="like('${paramPosteos.msg.titulo}')">
                             <i class="far fa-thumbs-up"></i>
                         </button>
                     </div>

@@ -107,7 +107,7 @@ app.post('/seguirUsuario', async (req, res) => {
 
 app.post('/likePost', async (req, res) => {
     const user = app.locals.user.users;
-    const post = await PostService.getPostById(req.body.userId);
+    const post = await PostService.getPostByTitulo(req.body.titulo);
     const userCreadorPost = await UserService.getById(post.post.idUser);
     postTitulo = post.post.titulo;
 
