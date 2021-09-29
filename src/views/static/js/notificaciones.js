@@ -21,8 +21,11 @@ socket.on(username + '_notificacion', (msg) => {
     if(message.type === 'FOLLOW'){
         item.querySelector('#mensaje').textContent = 'Empezo a seguirte';
     }
-    else if(message.type === 'LIKE'){
+    
+    if(message.type === 'LIKE'){
+        console.log("DENTRO DEL IF");
         item.querySelector('#mensaje').textContent = 'Le dio like a tu post ' + message.post;
+        console.log(item);
     }
     const contador = document.getElementById('contadorNoti');
     contador.textContent = parseInt(contador.textContent) + 1;

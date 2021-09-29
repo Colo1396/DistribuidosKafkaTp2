@@ -42,8 +42,6 @@ class UserService {
     
     static async getById(id){
         var users = await UserModel.findByPk(id);
-        console.log("USER");
-        console.log(users);
         return  {users: users};    
     }
 

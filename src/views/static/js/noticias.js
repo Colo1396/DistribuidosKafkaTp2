@@ -52,6 +52,7 @@ function traerMensajes(paramTopico){
                         "titulo" : post.msg.titulo,
                         "imagen" : post.msg.imagen,
                         "texto" : post.msg.texto,
+                        "idUser" : post.msg.idUser
                     }
                 }
                 
@@ -74,19 +75,25 @@ function traerMensajes(paramTopico){
 //Funcion para rellenar el html con la noticia
 function renderNoticia(paramPosteos,paramIdHtml){
     //creo un nuevo div el cual almacenara mi noticia
+    const user = paramPosteos.topic.split('_')[0];
+
     const div = document.createElement('div');
-    div.className = '';
+    div.className = "col-4";
     div.innerHTML = `
-        <div class="col-md-4">
-            <div class="card bg-dark">
-                <div class="card-header text-white d-flex justify-content-between align-items-center">
-                ${paramPosteos.msg.titulo}
+        <div class="card shadow-sm">
+            <img class="card-img-top" src="${paramPosteos.msg.imagen}">
+            <div class="card-body">
+                <h5 class="card-title" align="center">${paramPosteos.msg.titulo}</h5>
+                <p class="card-text">${paramPosteos.msg.texto}</p>
+                <small class="text-muted">By: ${user}</small>
+                <div class="justify-content-between align-items-center">
+                    <div align="right">
+                        <button class="like" style="font-size: 2em; color: Dodgerblue;" align="right" onclick="like('${paramPosteos.msg.idUser}')">
+                            <i class="far fa-thumbs-up"></i>
+                        </button>
+                    </div>
                 </div>
-                <img class="card-img-top" src="${paramPosteos.msg.imagen}">
-                <div class="card-body text-light">
-                ${paramPosteos.msg.texto}
-                </div>
-            </div>
+            </div>       
         </div>
         `;
 

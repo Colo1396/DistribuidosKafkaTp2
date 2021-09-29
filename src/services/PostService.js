@@ -14,6 +14,18 @@ class PostService {
         return  {posts: posts};
     }
 
+    static async getPostById(id){
+        var post = await PostModel.findOne({
+            where: { /** ME TRAE TODOS LOS USUARIOS QUE CUMPLAN EL PARAMETRO INDICADO*/
+                idUser: id
+            },
+            raw: true,
+            nest: true
+         });
+        return  {post};    
+    }
+
+
 }
 
 module.exports = {

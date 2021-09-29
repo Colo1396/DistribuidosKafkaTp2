@@ -53,8 +53,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //SETTINGS---------------------------------------------
-app.set('views', './src/views');
 app.set('json spaces', 2);
+/*
+app.set('views', './src/views');
 app.engine('.hbs', hbs({
     extname: 'hbs', 
     defaultLayout: "",
@@ -62,6 +63,10 @@ app.engine('.hbs', hbs({
     partialsDir: path.join(app.get('views'), 'partials') 
 }));
 app.set('view engine', 'hbs'); //CAMBIO PUG POR HBS
+*/
+
+app.set('view engine', 'hbs'); //CAMBIO PUG POR HBS
+app.set('views', './src/views');
 
 //VARIABLES GLOBALES-----------------------------------
 app.use((req, res, next) =>{
@@ -100,14 +105,20 @@ app.post('/seguirUsuario', async (req, res) => {
     res.end();
 });
 
-app.post('/likePost/:idPost', async (req, res) => {
+app.post('/likePost', async (req, res) => {
     const user = app.locals.user.users;
-    const followUser = await UserService.getById(req.body.followId);
-    followName = followUser.users.dataValues.username;
-    await SubscripcionService.add(followName, user.id);
-    
+    const post = await PostService.getPostById(req.body.userId);
+    const userCreadorPost = await UserService.getById(post.post.idUser);
+    postTitulo = post.post.titulo;
+
+    /*
+    console.log("LIKE POST");
+    console.log(userCreadorPost.users.dataValues.username);
+    console.log(postTitulo);
+    console.log(user.username);
+*/
     produce
-    .like(followName + '_notificaciones', req.body.posttitle, user.username)
+    .like(userCreadorPost.users.dataValues.username + '_notificaciones', postTitulo, user.username)
     .catch((err) => {
         console.error("Error en producer: ", err);
     });
@@ -148,7 +159,7 @@ app.post('/agregarNuevoPost', async (req,res)=>{
             "titulo" : req.body.titulo,
             "imagen" : req.body.imagen,
             "texto" : req.body.texto,
-            "idUser" : 1 //este atributo va a ser estatico hasta que se implemente la autenticacion de user (login/register) para identificar al user que lo crea
+            "idUser" : app.locals.user.users.id //este atributo va a ser estatico hasta que se implemente la autenticacion de user (login/register) para identificar al user que lo crea
         }
     }
 
