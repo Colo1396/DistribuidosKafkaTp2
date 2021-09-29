@@ -2,21 +2,6 @@ var socket = io();
 
 var listaNotif = document.getElementById("notificaciones");
 
-var post = `
-<div class="card mb-3" style="max-width: 540px;">
-    <div class="row g-0">
-        <div class="col-md-4">
-            <img src="https://via.placeholder.com/150" class="img-fluid rounded-start" alt="...">
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-                <h5 id="titulo" class="card-title"></h5>
-                <p id="mensaje" class="card-text"></p>
-            </div>
-        </div>
-    </div>
-</div>`;
-
 var notificacion = `
 <div class="col-12 pb-3">
     <strong id="nombre" class="text-info"></strong>
@@ -24,7 +9,10 @@ var notificacion = `
 </div>
 `
 
-socket.on('notificacion', (msg) => {
+const username = document.querySelector('.username').getAttribute('id');
+console.log(username);
+
+socket.on(username + '_notificacion', (msg) => {
     const message = JSON.parse(msg);
     var item = document.createElement('li');
     item.innerHTML = notificacion;

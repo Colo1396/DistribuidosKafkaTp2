@@ -6,6 +6,7 @@ const {UserService} = require('../services/UserService');
 const passport = require('passport');
 const { isLoggedIn, isNotLoggedIn } = require('../lib/auth'); //Método a utilizar en la vista que quiero proteger
 
+const notificacion = require('../lib/notificaciones');
 /*
  * GET pagina de registro
  */
@@ -40,11 +41,6 @@ router.post('/login', (req, res, next) =>{
 router.get('/logout', (req, res) => {
   req.logOut(); //Función de passport para eliminar la sesión
   res.render('login', { page_title: 'Login' });
-});
-
-//HOME
-router.get('/home', isLoggedIn, (req, res) => {
-  res.render('home', { page_title: 'Home' });
 });
 
 module.exports = router;

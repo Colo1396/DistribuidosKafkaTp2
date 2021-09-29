@@ -1,13 +1,13 @@
 module.exports = (sequalize, type)=>{
-    return sequalize.define('PostSuscripto',{
+    return sequalize.define('Subscripcion',{
         id: {
             type: type.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull : false
         },
-        followPostId:{
-            type: type.INTEGER,
+        followName:{
+            type: type.STRING,
             allowNull : false
         },
         idUser: {

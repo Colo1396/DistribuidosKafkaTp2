@@ -9,13 +9,16 @@ const session = require('express-session');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser'); 
+const notificacion = require('./lib/notificaciones');
+const { isLoggedIn, isNotLoggedIn } = require('./lib/auth');
+const hbs = require('express-handlebars');
 
 const consume = require("./consumer");
 const produce = require('./producer');
 
 //SERVICES--------------------------------------
 const {PostService} = require('./services/PostService');
-const {PostSuscriptoService} = require('./services/PostSuscriptoService');
+const {SubscripcionService} = require('./services/SubscripcionService');
 const {UserService} = require('./services/UserService');
 
 //---------------------------------------------------
@@ -50,11 +53,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //SETTINGS---------------------------------------------
-app.set('json spaces', 2);
-//app.set('view engine', 'pug');
-//app.set('view engine', 'ejs');
-app.set('view engine', 'hbs'); //CAMBIO PUG POR HBS
 app.set('views', './src/views');
+app.set('json spaces', 2);
+app.engine('.hbs', hbs({
+    extname: 'hbs', 
+    defaultLayout: "",
+    layoutsDir: app.get('views'),
+    partialsDir: path.join(app.get('views'), 'partials') 
+}));
+app.set('view engine', 'hbs'); //CAMBIO PUG POR HBS
 
 //VARIABLES GLOBALES-----------------------------------
 app.use((req, res, next) =>{
@@ -71,23 +78,36 @@ app.use(require('./routes/user'));
 app.get('/', (req, res) => {
     res.render('index');
     // llamo a la funcion "consume" , e imprime cualquier error
-    consume.consume(io).catch((err) => {
-        console.error("Error en consumer: ", err)
-    });
 });
 
-app.post('/users/123/follow', (req, res) => {
+//HOME
+app.get('/home', isLoggedIn, (req, res) => {
+    notificacion(io, app.locals.user.users.username);
+    res.render('home', { page_title: 'Home', user: app.locals.user.users});
+});
+
+app.post('/seguirUsuario', async (req, res) => {
+    const user = app.locals.user.users;
+    const followUser = await UserService.getById(req.body.followId);
+    followName = followUser.users.dataValues.username;
+    await SubscripcionService.add(followName, user.id);
+    
     produce
-    .follow('juan_notificaciones', 'Marta')
+    .follow(followName + '_notificaciones', user.username)
     .catch((err) => {
         console.error("Error en producer: ", err);
     });
     res.end();
 });
 
-app.post('/posts/123/like', (req, res) => {
+app.post('/likePost/:idPost', async (req, res) => {
+    const user = app.locals.user.users;
+    const followUser = await UserService.getById(req.body.followId);
+    followName = followUser.users.dataValues.username;
+    await SubscripcionService.add(followName, user.id);
+    
     produce
-    .like('juan_notificaciones', '123', 'Marta')
+    .like(followName + '_notificaciones', req.body.posttitle, user.username)
     .catch((err) => {
         console.error("Error en producer: ", err);
     });
@@ -102,14 +122,28 @@ app.get('/noticias', (req, res) => {
 app.post('/guardarMensaje', produce.guardarMensaje)
 app.post('/noticias/traerMensajes', consume.traerMensajes)
 
+app.get('/noticias/traerTopics', async (req, res) => {
+    const idUser = app.locals.user.users.id;
+    const subscripciones = await SubscripcionService.getAll(idUser);
+    
+    var topics = [];
+    subscripciones.usersSuscriptos.forEach(user => {
+        topics.push(user.followName);
+    })
+    console.log(topics);
+    res.json(topics);
+    res.end();
+});
 //-------------------------------------
 /** AGREGAR UN NUEVO POST Y GUARDARLO */
 app.get('/nuevoPost', (req,res)=>{
     return res.render('nuevoPost');
 });
 app.post('/agregarNuevoPost', async (req,res)=>{
+    const idUser = app.locals.user.users.username;
+    console.log(app.locals.user);
     const nuevoPost = {
-        "topic" : "nuevoTopic", 
+        "topic" : idUser + '_posts', 
         "msg": {
             "titulo" : req.body.titulo,
             "imagen" : req.body.imagen,
