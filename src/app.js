@@ -107,16 +107,12 @@ app.post('/seguirUsuario', async (req, res) => {
 
 app.post('/likePost', async (req, res) => {
     const user = app.locals.user.users;
-    const post = await PostService.getPostByTitulo(req.body.titulo);
+    const post = await PostService.getPostById(req.body.id);
+    console.log("POST --> "+ post.post);
+
     const userCreadorPost = await UserService.getById(post.post.idUser);
     postTitulo = post.post.titulo;
 
-    /*
-    console.log("LIKE POST");
-    console.log(userCreadorPost.users.dataValues.username);
-    console.log(postTitulo);
-    console.log(user.username);
-*/
     produce
     .like(userCreadorPost.users.dataValues.username + '_notificaciones', postTitulo, user.username)
     .catch((err) => {
@@ -145,6 +141,7 @@ app.get('/noticias/traerTopics', async (req, res) => {
     res.json(topics);
     res.end();
 });
+
 //-------------------------------------
 /** AGREGAR UN NUEVO POST Y GUARDARLO */
 app.get('/nuevoPost', (req,res)=>{
@@ -153,7 +150,7 @@ app.get('/nuevoPost', (req,res)=>{
 app.post('/agregarNuevoPost', async (req,res)=>{
     const idUser = app.locals.user.users.username;
     console.log(app.locals.user);
-    const nuevoPost = {
+    const nuevoPostBD = {
         "topic" : idUser + '_posts', 
         "msg": {
             "titulo" : req.body.titulo,
@@ -163,12 +160,29 @@ app.post('/agregarNuevoPost', async (req,res)=>{
         }
     }
 
-    console.log("Nuevo post --> "+ nuevoPost);
-    await PostService.add(nuevoPost.msg); //guardo los datos post en la BD para la persistencia
-    await produce.guardarPost(nuevoPost); //creo el post con kafka 
+    console.log("Nuevo post --> "+ nuevoPostBD.msg);
+    await PostService.add(nuevoPostBD.msg); //guardo los datos post en la BD para la persistencia
+
+    const postTotales = await PostService.getAll(); //obtengo todos los posts
+    console.log("CANT DE POSTS CREADOS --> "+postTotales.posts.length); //obtengo el id del nuevo post creado
+
+    const nuevoPostKafka = { /** creo un nuevo JSON para usarlo con kafka */
+        "topic" : idUser + '_posts', 
+        "msg": {
+            "id" : postTotales.posts.length,
+            "titulo" : req.body.titulo,
+            "imagen" : req.body.imagen,
+            "texto" : req.body.texto,
+            "idUser" : app.locals.user.users.id //este atributo va a ser estatico hasta que se implemente la autenticacion de user (login/register) para identificar al user que lo crea
+        }
+    }
+
+    await produce.guardarPost(nuevoPostKafka); //creo el post con kafka 
+
 
     res.redirect('/home');
 });
+
 
 /** Buscar usuarios para seguir */
 app.get('/buscarUsuarios', (req,res)=>{

@@ -47,7 +47,7 @@ SubscripcionModel.belongsTo(UserModel, {
 });
 
 /** INICIALIZO EL MAPEO **/
-sequelize.sync({ force: true})
+sequelize.sync({ force: false})
     .then( ()=>{
         console.log("Models mapeados!!!");
     });
