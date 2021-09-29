@@ -1,12 +1,12 @@
 const url = "http://localhost:8080";
 
-function like(userId){
-    console.log(userId)
+function like(id){
+    console.log(id)
     fetch(url + '/likePost', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            userId: userId
+            id: id
         })
     })
     .then( res => {

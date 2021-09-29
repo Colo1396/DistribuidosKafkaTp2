@@ -17,7 +17,18 @@ class PostService {
     static async getPostById(id){
         var post = await PostModel.findOne({
             where: { /** ME TRAE TODOS LOS USUARIOS QUE CUMPLAN EL PARAMETRO INDICADO*/
-                idUser: id
+                id: id
+            },
+            raw: true,
+            nest: true
+         });
+        return  {post};    
+    }
+
+    static async getPostByTitulo(titulo){
+        var post = await PostModel.findOne({
+            where: { /** ME TRAE TODOS LOS USUARIOS QUE CUMPLAN EL PARAMETRO INDICADO*/
+                titulo: titulo
             },
             raw: true,
             nest: true

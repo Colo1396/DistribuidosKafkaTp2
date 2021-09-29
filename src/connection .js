@@ -6,7 +6,7 @@ const subscripcionModel = require('./models/Subscripcion');
 
 /** CONFIGURACIÓN CONEXION PARA LA BD */
 
-const sequelize = new Sequelize("kafkaredsocial_db", "root", "toor" ,{
+const sequelize = new Sequelize("kafkaredsocial_db", "root", "123456789" ,{
     host : "localhost",
     port: "3306",
     dialect: "mysql"

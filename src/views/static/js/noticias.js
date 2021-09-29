@@ -62,16 +62,18 @@ function traerMensajes(paramTopico){
                 //recorro la data que esta dentro del response.json
                 data.forEach(post => {
                                 
-                    //genero un objeto en base a los datos recibidos
-                    const objPOst = {
-                        "topic" : post.topic, 
-                        "msg": {
-                            "titulo" : post.msg.titulo,
-                            "imagen" : post.msg.imagen,
-                            "texto" : post.msg.texto,
-                            "idUser" : post.msg.idUser
-                        }
+                //genero un objeto en base a los datos recibidos
+                const objPOst = {
+                    "topic" : post.topic, 
+                    "msg": {
+                        "id" : post.msg.id,
+                        "titulo" : post.msg.titulo,
+                        "imagen" : post.msg.imagen,
+                        "texto" : post.msg.texto,
+                        "idUser" : post.msg.idUser
                     }
+                }
+                
                     
                     //pusheo a la lista el objeto recien armado, para almacenar los msj de distintos topicos
                     listNoticias.push(objPOst)
@@ -105,7 +107,7 @@ function renderNoticia(paramPosteos,paramIdHtml){
                 <small class="text-muted">By: ${user}</small>
                 <div class="justify-content-between align-items-center">
                     <div align="right">
-                        <button class="like" style="font-size: 2em; color: Dodgerblue;" align="right" onclick="like('${paramPosteos.msg.idUser}')">
+                        <button class="like" style="font-size: 2em; color: Dodgerblue;" align="right" onclick="like('${paramPosteos.msg.id}')">
                             <i class="far fa-thumbs-up"></i>
                         </button>
                     </div>
