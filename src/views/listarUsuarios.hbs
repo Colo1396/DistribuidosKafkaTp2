@@ -120,7 +120,7 @@
                 <td>{{id}}</td>
                 <td>{{username}}</td>
                 <td>
-                  <button class="btn btn-success" style="margin-left: 5px;" onclick="seguirUsuario({{id}})">Seguir</button> <!-- aca se llamara al controller para seguir al usuario -->
+                  <button class="btn btn-success" style="margin-left: 5px;" onclick="seguirUsuario(this, {{id}})">Seguir</button> <!-- aca se llamara al controller para seguir al usuario -->
                 </td>
               </tr>
             {{/each}}

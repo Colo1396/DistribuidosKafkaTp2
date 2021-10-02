@@ -92,17 +92,32 @@ app.get('/home', isLoggedIn, (req, res) => {
 });
 
 app.post('/seguirUsuario', async (req, res) => {
-    const user = app.locals.user.users;
-    const followUser = await UserService.getById(req.body.followId);
-    followName = followUser.users.dataValues.username;
-    await SubscripcionService.add(followName, user.id);
-    
-    produce
-    .follow(followName + '_notificaciones', user.username)
-    .catch((err) => {
-        console.error("Error en producer: ", err);
-    });
-    res.end();
+    try{
+        const user = app.locals.user.users;
+        const followUser = await UserService.getById(req.body.followId);
+        followName = followUser.users.dataValues.username;
+
+        // Me fijo si el usuario esta en la lista de seguidos
+        const seguidos = await SubscripcionService.getAll(user.id);
+        const followExists = seguidos.usersSuscriptos.filter((s) => s.followName === followName);
+
+        if(followExists.length > 0){
+            return res.status(400).send('Ya seguis a ese usuario');
+        }
+        else{
+            await SubscripcionService.add(followName, user.id);
+            
+            produce
+            .follow(followName + '_notificaciones', user.username)
+            .catch((err) => {
+                console.error("Error en producer: ", err);
+            });
+            res.end();
+        } 
+    } catch(err){
+        console.error(err);
+        res.status(400).send(err);
+    }
 });
 
 app.post('/likePost', async (req, res) => {
@@ -189,9 +204,18 @@ app.get('/buscarUsuarios', (req,res)=>{
     return res.render('listarUsuarios');
 });
 app.post('/buscarUsuarios', async(req,res)=>{
+    const user = app.locals.user.users;
     const usuariosBuscados = await UserService.findUsersByUsername(req.body.username); //realizo la query
-    const usuarios = usuariosBuscados.userFilters;
-    console.log(usuarios);
+    var usuarios = usuariosBuscados.userFilters;
+
+    
+    var seguidos = await SubscripcionService.getAll(user.id);
+    seguidos = seguidos.usersSuscriptos;
+
+    // Filtro los usuarios ya seguidos
+    usuarios = usuarios.filter((usuario) => {
+        return !seguidos.some((s) => s.followName === usuario.username);
+    });
 
     return res.render('listarUsuarios', {usuarios: usuarios});
 });
