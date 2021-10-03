@@ -1,5 +1,6 @@
 const { Kafka } = require("kafkajs") //dependencia para usar kafka con node
 const kafka = new Kafka({ clientId: "node" , brokers: ["localhost:9092"]} );
+const {LikeService} = require('./services/LikeService');
 
 const consume = async (io, username) =>{
     const consumer = kafka.consumer({ groupId: "node"}); 
@@ -26,10 +27,16 @@ const traerMensajes = async (req, res) => {
         //let post=retorno
         await consumer.run({
             eachMessage: async ({ message }) => {
-                const value = message.value.toString()
-                retorno.push(JSON.parse(value))
+                var value = JSON.parse(message.value.toString());
+
+                if(value.msg){
+                    const idPost = value.msg.id;
+                    const like = await LikeService.getById(idPost, res.locals.user.users.id);
+                    value.msg.liked = like.length !== 0;
+                }
+                retorno.push(value);
             },
-        })
+        });
 
         setTimeout(() => {
             consumer.disconnect()

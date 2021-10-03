@@ -3,6 +3,7 @@ const {Sequelize} = require('sequelize');
 const userModel = require('./models/User');
 const postModel = require('./models/Post');
 const subscripcionModel = require('./models/Subscripcion');
+const likeModel = require('./models/Like');
 
 /** CONFIGURACIÓN CONEXION PARA LA BD */
 
@@ -24,10 +25,10 @@ const sequelize = new Sequelize("bbvz5ubbkmmsymn7s0pm", "u1k3xrdtrvnoxfts", "229
 const UserModel = userModel(sequelize, Sequelize);
 const PostModel = postModel(sequelize, Sequelize);
 const SubscripcionModel = subscripcionModel(sequelize, Sequelize);
+const LikeModel = likeModel(sequelize, Sequelize);
 
-
- /*** relacion one to many de User y Post **/
- UserModel.hasMany(PostModel, {
+/*** relacion one to many de User y Post **/
+UserModel.hasMany(PostModel, {
         foreignKey: 'idUser' , 
         as: 'posts'
     });
@@ -36,12 +37,22 @@ PostModel.belongsTo(UserModel, {
     as: 'user'
 });
 
- /*** relacion one to many de User y PostSuscriptos **/
+/*** relacion one to many de User y Subscripcion **/
 UserModel.hasMany(SubscripcionModel, {
     foreignKey: 'idUser' , 
     as: 'suscripciones'
 });
 SubscripcionModel.belongsTo(UserModel, {
+    foreignKey: 'idUser',
+    as: 'user'
+});
+
+/*** relacion one to many de User y Like **/
+UserModel.hasMany(LikeModel, {
+    foreignKey: 'idUser' , 
+    as: 'likes'
+});
+LikeModel.belongsTo(UserModel, {
     foreignKey: 'idUser',
     as: 'user'
 });
@@ -57,5 +68,6 @@ module.exports = {
     UserModel,
     PostModel,
     SubscripcionModel, 
+    LikeModel,
     sequelize
 }

@@ -33,7 +33,6 @@ fetch(api_url + '/traerTopics', {
     }else{
         data.forEach(topic => {
             const newTopic = {'topic': topic + '_posts'}
-            console.log(newTopic);
             traerMensajes(newTopic);
         })
     }
@@ -61,7 +60,6 @@ function traerMensajes(paramTopico){
         .then(data => {
                 //recorro la data que esta dentro del response.json
                 data.forEach(post => {
-                                
                 //genero un objeto en base a los datos recibidos
                 const objPOst = {
                     "topic" : post.topic, 
@@ -70,7 +68,8 @@ function traerMensajes(paramTopico){
                         "titulo" : post.msg.titulo,
                         "imagen" : post.msg.imagen,
                         "texto" : post.msg.texto,
-                        "idUser" : post.msg.idUser
+                        "idUser" : post.msg.idUser,
+                        "liked": post.msg.liked
                     }
                 }
                 
@@ -96,6 +95,13 @@ function renderNoticia(paramPosteos,paramIdHtml){
     //creo un nuevo div el cual almacenara mi noticia
     const user = paramPosteos.topic.split('_')[0];
 
+    var like = 'class="far fa-thumbs-up"';
+    var disabled = '';
+    if(paramPosteos.msg.liked){
+        like = 'class="fas fa-thumbs-up text-success"';
+        disabled = 'like-disabled';
+    }
+
     const div = document.createElement('div');
     div.className = "col-4";
     div.innerHTML = `
@@ -107,9 +113,9 @@ function renderNoticia(paramPosteos,paramIdHtml){
                 <small class="text-muted">By: ${user}</small>
                 <div class="justify-content-between align-items-center">
                     <div align="right">
-                        <button class="like" style="font-size: 2em; color: Dodgerblue;" align="right" onclick="like('${paramPosteos.msg.id}')">
-                            <i class="far fa-thumbs-up"></i>
-                        </button>
+                        <a class="like ${disabled}" href="#"  align="right" onclick="like(this, '${paramPosteos.msg.id}')">
+                            <i ${like}></i>
+                        </a>
                     </div>
                 </div>
             </div>       

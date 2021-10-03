@@ -20,6 +20,7 @@ const produce = require('./producer');
 const {PostService} = require('./services/PostService');
 const {SubscripcionService} = require('./services/SubscripcionService');
 const {UserService} = require('./services/UserService');
+const { LikeService } = require('./services/LikeService');
 
 //---------------------------------------------------
 //REGISTRO
@@ -73,6 +74,7 @@ app.use((req, res, next) =>{
     app.locals.success = req.flash('success');
     app.locals.message = req.flash('message');
     app.locals.user = req.user;
+    res.locals.user = req.user;
     next();
 });
 
@@ -127,6 +129,13 @@ app.post('/likePost', async (req, res) => {
 
     const userCreadorPost = await UserService.getById(post.post.idUser);
     postTitulo = post.post.titulo;
+
+    // Chequeo si ya se le dio like al post, sino lo agrego.
+    const like = await LikeService.getById(post.post.id, user.id);
+    if(like.length > 0){
+        return res.status(400).send('Ya le diste like a este post');
+    }
+    await LikeService.add(post.post.id, user.id);
 
     produce
     .like(userCreadorPost.users.dataValues.username + '_notificaciones', postTitulo, user.username)
