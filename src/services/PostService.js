@@ -36,7 +36,16 @@ class PostService {
         return  {post};    
     }
 
+    static async udpdateLikesPost(idPost, cantLikes){
+        var postActualizado = await PostModel.update(
+            {cantidadLikes: cantLikes},
+            {where: {
+                id: idPost
+            }},
+        );
 
+        return {postActualizado};
+    }
 }
 
 module.exports = {

@@ -1,7 +1,7 @@
-const api_url = "http://localhost:8080";
+const url_seguir = "http://localhost:8080";
 
 function seguirUsuario(button, followId){
-    fetch(api_url + '/seguirUsuario', {
+    fetch(url_seguir + '/seguirUsuario', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

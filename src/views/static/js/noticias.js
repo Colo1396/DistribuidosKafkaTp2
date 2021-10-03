@@ -1,5 +1,4 @@
 //const { response } = require("express");
-
 var containerNoticia = document.getElementById("verNoticias");
 
 const api_url = "http://localhost:8080/noticias"
@@ -68,11 +67,11 @@ function traerMensajes(paramTopico){
                         "titulo" : post.msg.titulo,
                         "imagen" : post.msg.imagen,
                         "texto" : post.msg.texto,
+                        "cantidadLikes": post.msg.cantidadLikes,
                         "idUser" : post.msg.idUser,
                         "liked": post.msg.liked
                     }
-                }
-                
+                };
                     
                     //pusheo a la lista el objeto recien armado, para almacenar los msj de distintos topicos
                     listNoticias.push(objPOst)
@@ -95,7 +94,7 @@ function renderNoticia(paramPosteos,paramIdHtml){
     //creo un nuevo div el cual almacenara mi noticia
     const user = paramPosteos.topic.split('_')[0];
 
-    var like = 'class="far fa-thumbs-up"';
+    var like = 'class="far fa-thumbs-up" style="cursor: pointer" ';
     var disabled = '';
     if(paramPosteos.msg.liked){
         like = 'class="fas fa-thumbs-up text-success"';
@@ -113,8 +112,9 @@ function renderNoticia(paramPosteos,paramIdHtml){
                 <small class="text-muted">By: ${user}</small>
                 <div class="justify-content-between align-items-center">
                     <div align="right">
-                        <a class="like ${disabled}" href="#"  align="right" onclick="like(this, '${paramPosteos.msg.id}')">
-                            <i ${like}></i>
+                        <a class="like ${disabled}" align="right" onclick="like(this, '${paramPosteos.msg.id}','${paramPosteos.msg.cantidadLikes}')">
+                            <b>${paramPosteos.msg.cantidadLikes}</b>
+                            <i ${like}"></i>
                         </a>
                     </div>
                 </div>

@@ -21,7 +21,6 @@ const {PostService} = require('./services/PostService');
 const {SubscripcionService} = require('./services/SubscripcionService');
 const {UserService} = require('./services/UserService');
 const { LikeService } = require('./services/LikeService');
-
 //---------------------------------------------------
 //REGISTRO
 var user = require('./routes/user'); 
@@ -55,17 +54,6 @@ app.use(passport.session());
 
 //SETTINGS---------------------------------------------
 app.set('json spaces', 2);
-/*
-app.set('views', './src/views');
-app.engine('.hbs', hbs({
-    extname: 'hbs', 
-    defaultLayout: "",
-    layoutsDir: app.get('views'),
-    partialsDir: path.join(app.get('views'), 'partials') 
-}));
-app.set('view engine', 'hbs'); //CAMBIO PUG POR HBS
-*/
-
 app.set('view engine', 'hbs'); //CAMBIO PUG POR HBS
 app.set('views', './src/views');
 
@@ -84,7 +72,6 @@ app.use(require('./routes/user'));
 
 app.get('/', (req, res) => {
     res.render('index');
-    // llamo a la funcion "consume" , e imprime cualquier error
 });
 
 //HOME
@@ -93,7 +80,7 @@ app.get('/home', isLoggedIn, (req, res) => {
     res.render('home', { page_title: 'Home', user: app.locals.user.users});
 });
 
-app.post('/seguirUsuario', async (req, res) => {
+app.post('/seguirUsuario', isLoggedIn ,async (req, res) => {
     try{
         const user = app.locals.user.users;
         const followUser = await UserService.getById(req.body.followId);
@@ -122,7 +109,7 @@ app.post('/seguirUsuario', async (req, res) => {
     }
 });
 
-app.post('/likePost', async (req, res) => {
+app.post('/likePost', isLoggedIn , async (req, res) => {
     const user = app.locals.user.users;
     const post = await PostService.getPostById(req.body.id);
     console.log("POST --> "+ post.post);
@@ -135,7 +122,8 @@ app.post('/likePost', async (req, res) => {
     if(like.length > 0){
         return res.status(400).send('Ya le diste like a este post');
     }
-    await LikeService.add(post.post.id, user.id);
+    await LikeService.add(post.post.id, user.id); //creo el registro para la persistencia del like
+    await PostService.udpdateLikesPost(post.post.id, post.post.cantidadLikes + 1); //actualizo la cant. de likes del post
 
     produce
     .like(userCreadorPost.users.dataValues.username + '_notificaciones', postTitulo, user.username)
@@ -146,14 +134,14 @@ app.post('/likePost', async (req, res) => {
 });
 
 //-------------------------------------
-app.get('/noticias', (req, res) => {
+app.get('/noticias', isLoggedIn , (req, res) => {
     res.render('noticias');
 });
 
-app.post('/guardarMensaje', produce.guardarMensaje)
-app.post('/noticias/traerMensajes', consume.traerMensajes)
+app.post('/guardarMensaje', isLoggedIn , produce.guardarMensaje);
+app.post('/noticias/traerMensajes',  isLoggedIn , consume.traerMensajes);
 
-app.get('/noticias/traerTopics', async (req, res) => {
+app.get('/noticias/traerTopics', isLoggedIn ,async (req, res) => {
     const idUser = app.locals.user.users.id;
     const subscripciones = await SubscripcionService.getAll(idUser);
     
@@ -163,15 +151,16 @@ app.get('/noticias/traerTopics', async (req, res) => {
     })
     console.log(topics);
     res.json(topics);
+
     res.end();
 });
 
 //-------------------------------------
 /** AGREGAR UN NUEVO POST Y GUARDARLO */
-app.get('/nuevoPost', (req,res)=>{
+app.get('/nuevoPost', isLoggedIn , (req,res)=>{
     return res.render('nuevoPost');
 });
-app.post('/agregarNuevoPost', async (req,res)=>{
+app.post('/agregarNuevoPost', isLoggedIn , async (req,res)=>{
     const idUser = app.locals.user.users.username;
     console.log(app.locals.user);
     const nuevoPostBD = {
@@ -180,7 +169,8 @@ app.post('/agregarNuevoPost', async (req,res)=>{
             "titulo" : req.body.titulo,
             "imagen" : req.body.imagen,
             "texto" : req.body.texto,
-            "idUser" : app.locals.user.users.id //este atributo va a ser estatico hasta que se implemente la autenticacion de user (login/register) para identificar al user que lo crea
+            "cantidadLikes": 0,
+            "idUser" : app.locals.user.users.id
         }
     }
 
@@ -197,22 +187,21 @@ app.post('/agregarNuevoPost', async (req,res)=>{
             "titulo" : req.body.titulo,
             "imagen" : req.body.imagen,
             "texto" : req.body.texto,
-            "idUser" : app.locals.user.users.id //este atributo va a ser estatico hasta que se implemente la autenticacion de user (login/register) para identificar al user que lo crea
+            "cantidadLikes": 0,
+            "idUser" : app.locals.user.users.id
         }
     }
 
     await produce.guardarPost(nuevoPostKafka); //creo el post con kafka 
-
-
     res.redirect('/home');
 });
 
-
+//-------------------------------------
 /** Buscar usuarios para seguir */
-app.get('/buscarUsuarios', (req,res)=>{
+app.get('/buscarUsuarios', isLoggedIn , (req,res)=>{
     return res.render('listarUsuarios');
 });
-app.post('/buscarUsuarios', async(req,res)=>{
+app.post('/buscarUsuarios', isLoggedIn, async(req,res)=>{
     const user = app.locals.user.users;
     const usuariosBuscados = await UserService.findUsersByUsername(req.body.username); //realizo la query
     var usuarios = usuariosBuscados.userFilters;
@@ -226,6 +215,9 @@ app.post('/buscarUsuarios', async(req,res)=>{
         return !seguidos.some((s) => s.followName === usuario.username);
     });
 
+    usuarios = usuarios.filter((u)=>{ //nuevo filtro para que no traiga al mismo user que esta logueado
+        return u.id !== user.id;
+    });
     return res.render('listarUsuarios', {usuarios: usuarios});
 });
 

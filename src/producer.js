@@ -51,11 +51,6 @@ const guardarMensaje = async (req, res) => {
             messages: [
                 {value:msg},
             ],
-            /*topic: 'topic-name',
-            messages: [
-                { key: 'key1', value: 'hello world' },
-                { key: 'key2', value: 'hey hey!' }
-            ],*/
         })
         await producer.disconnect()
         res.send('mensaje guardado');
