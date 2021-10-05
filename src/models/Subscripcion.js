@@ -1,5 +1,5 @@
 module.exports = (sequalize, type)=>{
-    return sequalize.define('Subscripcion',{
+    return sequalize.define('subscripcion',{
         id: {
             type: type.INTEGER,
             primaryKey: true,

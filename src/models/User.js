@@ -1,5 +1,5 @@
 module.exports = (sequalize, type)=>{
-    return sequalize.define('Usuario',{
+    return sequalize.define('usuario',{
         id: {
             type: type.INTEGER,
             primaryKey: true,

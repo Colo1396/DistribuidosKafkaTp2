@@ -1,5 +1,5 @@
 module.exports = (sequalize, type)=>{
-    return sequalize.define('Post',{
+    return sequalize.define('post',{
         id: {
             type: type.INTEGER,
             primaryKey: true,
