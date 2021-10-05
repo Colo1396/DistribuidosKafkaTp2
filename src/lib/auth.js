@@ -18,6 +18,6 @@ module.exports = {
         if (!req.isAuthenticated()) { //si el usuario no está autenticado.
             return next();
         }
-        return res.render('home', { page_title: 'Inicio' });
+        return res.render('home', { page_title: 'Inicio', user: req.user.users.dataValues});
     }
 };

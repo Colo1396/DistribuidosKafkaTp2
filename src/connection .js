@@ -7,7 +7,7 @@ const likeModel = require('./models/Like');
 
 /** CONFIGURACIÓN CONEXION PARA LA BD */
 
-const sequelize = new Sequelize("kafkaredsocial_db", "root", "123456789" ,{
+const sequelize = new Sequelize("kafkaredsocial_db", "root", "toor" ,{
     host : "localhost",
     port: "3306",
     dialect: "mysql"

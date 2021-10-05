@@ -30,7 +30,6 @@ router.get('/login', isNotLoggedIn, (req, res) => {
 });
 
 router.post('/login', (req, res, next) =>{
-  console.log("user js");
   passport.authenticate('local.signin', {
   successRedirect: '/home',
   failureRedirect: '/login',

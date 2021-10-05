@@ -11,21 +11,28 @@ passport.use('local.signup', new LocalStrategy({
   passwordField: 'password', //la contraseña
   passReqToCallback: true //para recibir mas datos, obtenidos desde el request
 }, async (req, username, password, done) => { 
- 
-    //callback que se ejecuta despues de LocalStrategy
-    //recibe el request, username y password, done (callback para continuar con el resto del codigo)
-    const { name } = req.body;
-    let newUser = {
-      name,
-      username,
-      password
-    };
-    newUser.password = await helpers.encryptPassword(password); //desde helpers, encripto la pass
-    // Guardo el user
-    const result = await UserService.add(newUser);
-    //console.log(result.id);
-    newUser.id = result.id;
-    return done(null, newUser);
+
+    var userExistente = await UserService.findUsersByUsername(username);
+    
+    if(userExistente.userFilters.length){
+      console.log("Usuario existente");
+      return done(null, false, req.flash('message', 'Username existente.'));
+    }else{
+        //callback que se ejecuta despues de LocalStrategy
+        //recibe el request, username y password, done (callback para continuar con el resto del codigo)
+        const { name } = req.body;
+        let newUser = {
+          name,
+          username,
+          password
+        };
+        newUser.password = await helpers.encryptPassword(password); //desde helpers, encripto la pass
+        // Guardo el user
+        const result = await UserService.add(newUser);
+        //console.log(result.id);
+        newUser.id = result.id;
+        return done(null, newUser, req.flash('success', 'Bienvenido/a ' + newUser.username));
+    }
 }));
 
 passport.use('local.signin', new LocalStrategy({
@@ -33,13 +40,8 @@ passport.use('local.signin', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, async (req, username, password, done) => {
-  console.log("PASSPORT");
-
   const rows = await sequelize.query('SELECT * FROM usuarios WHERE username = :username', {
     replacements: { username: username }, type: sequelize.QueryTypes.SELECT });
-  //const rows = await UserService.getByUser(username);
-  //console.log("DESPUES DE LA QUERY SEQUELIZE");
-  //console.log(rows);
   if (rows.length > 0) {
     const user = rows[0];
     const validPassword = await helpers.matchPassword(password, user.password)
