@@ -17,52 +17,47 @@
     <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-<header>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand mr-1" href="/">UNLa</a>
-            <ul class="navbar-nav ml-auto ml-md-0">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/register">Registrarse</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Iniciar sesión</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
-    {{#if message}}
-    <div class="container p-4">
-        <div class="row">
-            <div class="col-md-4 mx-auto">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{message}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="login-wrapper row">
+        <header>
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand navbar-dark fixed-top bg-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand mr-1" href="/">UNLa</a>
+                    <ul class="navbar-nav ml-auto ml-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/register">Registrarse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Iniciar sesión</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        {{#if message}}
+            <div class="col-12 mt-5 mb-4 pt-3">
+                <div class="col-md-4 mx-auto">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{message}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    {{/if}}
-
-    {{#if success}}
-    <div class="container p-4">
-        <div class="row">
-            <div class="col-md-4 mx-auto">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{success}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        {{/if}}
+        {{#if success}}
+            <div class="col-12 mt-5 mb-4 pt-3">
+                <div class="col-md-4 mx-auto">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{success}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    {{/if}}
-    <div class="login-wrapper">
+        {{/if}}
         <form action="/login" method="post" class="form">
             <img src="/img/user2.png" alt="">
             <h2>Iniciar sesión</h2>

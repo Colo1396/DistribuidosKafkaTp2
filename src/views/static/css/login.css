@@ -9,7 +9,7 @@
     font-family: sans-serif;
   }
   .login-wrapper {
-    height: 100vh;
+    height: 90vh;
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -20,11 +20,12 @@
     /* width: 100%; */
     width: 90%;
     max-width: 500px;
-    padding: 80px 40px 40px;
+    padding: 60px 40px 20px;
     background: rgba(0,0,0,0.7);
     border-radius: 10px;
     color: #fff;
     box-shadow: 0 15px 25px rgba(0,0,0,0.5);
+    margin-top:70px;
   }
   .form::before {
     content:'';
